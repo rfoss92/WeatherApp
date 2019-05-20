@@ -55,7 +55,6 @@ class App extends Component {
       	this.setWeatherState(result);
       	this.setTimeState();
         this.setState({});
-        console.log(result);
       },
       (error) => {
         this.setState({
@@ -77,7 +76,6 @@ class App extends Component {
   		this.state.temp.push(temp);
   		this.state.humidity.push(' Humidity: ' + response.list[i].main.humidity + '%');
   		this.state.wind.push('Wind: ' + response.list[i].wind.speed + ' mph');
-  		console.log(this.state.temp);
 		}
 	}
 
@@ -147,7 +145,7 @@ class App extends Component {
 								
 									<div className="col-xs-12 form-container">
 						    		<Form getWeather={this.getWeather}/>									
-						    		
+
 						    		<section className="menu">
 							    		<button onClick={() => this.setForecastedDays(1)}>One Day</button>
 							    		<button onClick={() => this.setForecastedDays(3)}>Three Day</button>

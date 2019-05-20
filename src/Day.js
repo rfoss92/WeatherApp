@@ -24,7 +24,7 @@ class Day extends Component {
       <div className="weather-info">
         <p>{this.props.currentDayOfWeek}</p>
         <p>{this.props.currentDate}</p>
-        <img src={weatherImage} className="forecast-img" />
+        <img src={weatherImage} className="forecast-img" alt=""/>
         <p id='temp' className="weather__key"><span className="weather__value"> {this.props.temp}</span></p>
         <section style={{display: this.props.getDetails ? "block" : "none"}}>
           <p id='description' className="weather__key"><span className="weather__value"> {this.props.description}</span></p>
