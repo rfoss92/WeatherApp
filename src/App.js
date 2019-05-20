@@ -1,40 +1,185 @@
 import React, { Component } from 'react';
-import cloudyImage from './img/cloudy.png';
-import rainyImage from './img/rainy.png';
-import snowyImage from './img/snowy.png';
-import sunnyImage from './img/sunny.png';
-import './css/App.css';
+import './css/index.css';
+import {Day} from './Day';
+import {Form} from './Form';
 
-class Day extends Component {
-  render() {
-    let weatherImage = 'asdf';
-    let asdf = this.props.description;
-    if(asdf){
-      if(asdf.includes('rain')){
-        weatherImage = rainyImage;
-      } else if(asdf.includes('cloud' || 'fog')){
-        weatherImage = cloudyImage;
-      } else if(asdf.includes('snow')){
-        weatherImage = snowyImage;
-      } else if(asdf.includes('clear' || 'sun')){
-        weatherImage = sunnyImage;
-      }
-    }
-
-    return (
-      <div>
-        <p>{this.props.currentDayOfWeek}</p>
-        <p>{this.props.currentDate}</p>        
-        <img src={weatherImage} className="App-img" alt="weather" />
-        <p id='description'>{this.props.description}</p>
-        <p id='temp'>{this.props.temp}</p>
-        <p id='humidity'>{this.props.humidity}</p>
-        <p id='wind'>{this.props.wind}</p>
-      </div>
-    );
+class App extends Component {
+	 constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+			currentDayOfWeek: [],
+			currentDate: [],
+      description: [],
+      temp: [],
+      humidity: [],
+      wind: [],
+      backgroundImage: '',
+      coordinates: '',
+      forecastedDays: 1,
+      getDetails: false
+    };
+    // this.getCoordinates = this.getCoordinates.bind(this);
+    // this.setCoordinates = this.setCoordinates.bind(this);
+    this.setForecastedDays = this.setForecastedDays.bind(this);
+    this.getDetails = this.getDetails.bind(this); 
   }
+
+ //  componentDidMount() {
+	// 	this.getCoordinates();
+ //  } 
+
+	// getCoordinates() {
+	// 	navigator.geolocation.getCurrentPosition(this.setCoordinates)
+	// }
+
+	// setCoordinates(pos) {
+ //  	this.setState({
+ //  		coordinates: pos.coords	
+ //  	});
+ //  	this.getWeather();
+ //  }
+
+	getWeather = async (e) =>  {
+    e.preventDefault();
+    const city = e.target.elements.city.value;
+		const country = e.target.elements.country.value;
+
+		fetch(`http://api.openweathermap.org/data/2.5/forecast
+			?q=${city}
+			,${country}
+			&appid=1815c1cb674522f41e5935a2267ee5b6`)
+    .then(res => res.json())
+    .then(
+      (result) => {
+      	this.setWeatherState(result);
+      	this.setTimeState();
+        this.setState({});
+        console.log(result);
+      },
+      (error) => {
+        this.setState({
+          error
+        });
+      }
+    ).then(
+    	// this.setBackground()
+    )
+
+	}
+
+	setWeatherState(response) {
+  	for(let i = 0; i<7; i++){
+  		let temp = response.list[i].main.temp;
+  		temp = Math.round(((temp-273.15)*1.8)+32) + '°F';
+  		
+  		this.state.description.push(response.list[i].weather[0].description);
+  		this.state.temp.push(temp);
+  		this.state.humidity.push(' Humidity: ' + response.list[i].main.humidity + '%');
+  		this.state.wind.push('Wind: ' + response.list[i].wind.speed + ' mph');
+  		console.log(this.state.temp);
+		}
+	}
+
+	setTimeState() {
+		for(let i = 0; i<7; i++){
+			let date = new Date();  
+			let month = date.getMonth() + 1;
+			month = (month < 10 ? "0" : "") + month;
+			let day  = date.getDate() + i;
+			day = (day < 10 ? "0" : "") + day;
+			this.state.currentDate.push(month + "/" + day);
+
+			date.setDate(date.getDate()+i)
+			let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+			let dayName = days[date.getDay()];
+			this.state.currentDayOfWeek.push(dayName);
+		} 
+	}
+
+	// setBackground() {
+	//   let date = new Date();
+	//   let hour = date.getHours();
+
+	// 	document.body.style.backgroundImage = 'url(' + require(`./img/${this.greeting}.jpg`) + ')'; 
+	// }	
+
+  getDayComponents() {
+  	let dayComponents = []
+		for(let i = 0; i<this.state.forecastedDays; i++){
+    	dayComponents.push(this.createDayComponent(i));
+    }
+    return dayComponents;
+  }
+
+  createDayComponent(i) {
+    return <Day 
+	  	currentDayOfWeek={this.state.currentDayOfWeek[i]}
+	  	currentDate={this.state.currentDate[i]}
+	  	description={this.state.description[i]}
+	  	temp={this.state.temp[i]}
+	  	humidity={this.state.humidity[i]}
+	  	wind={this.state.wind[i]}
+	  	getDetails={this.state.getDetails}
+  	/>;
+  }
+
+  getDetails() {
+  	this.setState({
+			getDetails: !(this.state.getDetails)
+		});
+  }
+
+  setForecastedDays(days) {
+  	this.setState({
+			forecastedDays: days
+		});
+  }
+
+  render() {
+		if (this.state.description){
+	    return (
+	    	<div>
+		      <div className="wrapper">
+					  <div className="main">
+					    <div className="container">
+					    	<div className="row">
+								
+									<div className="col-xs-12 form-container">
+						    		<Form getWeather={this.getWeather}/>									
+						    		
+						    		<section className="menu">
+							    		<button onClick={() => this.setForecastedDays(1)}>One Day</button>
+							    		<button onClick={() => this.setForecastedDays(3)}>Three Day</button>
+							    		<button onClick={() => this.setForecastedDays(7)}>Seven Day</button>
+						    		</section>
+							      <section className="menu">
+							    		<button onClick={this.getDetails}>Details</button>
+						    		</section>
+							      <div className="forecast">
+						      	  {this.getDayComponents()}
+							      </div>
+
+						      </div>
+
+					   	  </div>
+					  	</div>
+						</div>
+					</div>
+
+	    	
+	    	</div>
+	    );
+	  } else {
+	  	return (
+	      <div className="loading">
+		  		<span>Loading...</span>
+		  	</div>
+	  	);
+	  }
+	}
 }
 
-export { 
-  Day
+export {
+  App
 }
