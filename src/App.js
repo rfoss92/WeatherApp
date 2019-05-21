@@ -19,26 +19,10 @@ class App extends Component {
       forecastedDays: 1,
       getDetails: false
     };
-    // this.getCoordinates = this.getCoordinates.bind(this);
-    // this.setCoordinates = this.setCoordinates.bind(this);
     this.setForecastedDays = this.setForecastedDays.bind(this);
     this.getDetails = this.getDetails.bind(this); 
   }
 
- //  componentDidMount() {
-	// 	this.getCoordinates();
- //  } 
-
-	// getCoordinates() {
-	// 	navigator.geolocation.getCurrentPosition(this.setCoordinates)
-	// }
-
-	// setCoordinates(pos) {
- //  	this.setState({
- //  		coordinates: pos.coords	
- //  	});
- //  	this.getWeather();
- //  }
 
 	getWeather = async (e) =>  {
     e.preventDefault();
@@ -143,7 +127,7 @@ class App extends Component {
 					    <div className="container">
 					    	<div className="row">
 								
-									<div className="col-xs-12 form-container">
+									<div className="col-md-12 form-container">
 						    		<Form getWeather={this.getWeather}/>									
 
 						    		<section className="menu">
@@ -154,8 +138,10 @@ class App extends Component {
 							      <section className="menu">
 							    		<button onClick={this.getDetails}>Details</button>
 						    		</section>
-							      <div className="forecast">
-						      	  {this.getDayComponents()}
+							      <div className="forecast container">
+							        <div className="row">
+						      	  	{this.getDayComponents()}
+						      	  </div>
 							      </div>
 
 						      </div>

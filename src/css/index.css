@@ -1,3 +1,7 @@
+html, body {
+  height: 100%;
+}
+
 body {
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -5,13 +9,11 @@ body {
   background-size: cover;
   background-attachment: fixed;
   font: bold 16px/1.5 Helvetica, Arial, sans-serif;	
-  color: #333;
+  color: white;
 }
 h1 {
   font-size: 4rem;
 	margin-bottom: 2%;
-}
-p {
 }
 button {
   font: bold 16px/1.5 Helvetica, Arial, sans-serif;
@@ -20,38 +22,61 @@ button {
   border: none;
   cursor: pointer;
 }
-
+form {
+   display: inline-block;
+   text-align: center;
+}
+.weather-info {
+  color: white;
+}
 .menu {
   display: flex;
   justify-content: center;
-}
-.forecast {
-  display: flex;
-  justify-content: center;
-  margin: 20px;
 }
 .forecast-img {
   height: 50px;
   display: block;
   margin: auto;
-
 }
-.forecast div {
+.weather-info{
   width: 130px;
 	margin: 10px;
 	padding: 5px 10px 20px;
 }
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+section .weather__key {
+  text-align: left;
+}
+.weather__key {
+  border-bottom: solid 2px rgba(255,255,255,0.06);
+  padding: 20px 0 20px 0;
+  font-weight: 400;
+  text-align: center;
+}
 
-.wrapper {
-  background: linear-gradient(to right, #70bef4, #066ab0);
-  height: 100vh;
+.weather__key:last-child {
+  border: 0;
+}
+
+.weather__value {
+  font-weight: 200;
+}
+.wrapper, .form-container2  {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+.wrapper {
+  background: linear-gradient(to right, #70bef4, #066ab0);
+  min-height: 100vh;
+}
 
 .main {
-  height: 100vh;
+  min-height: 100vh;
   background: #fff;
   box-shadow: 0px 13px 40px -13px rgba(0,0,0,0.75);
   width: 80%;
@@ -59,20 +84,16 @@ button {
 
 .form-container {
   background-color: #0a2333; 
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
   padding-top: 100px;
-  padding-left: 50px;
 }
-.form-container2 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+
 input[type="text"] {
   background-color: transparent;
   border: 0;
-  border-bottom: solid 1px #f16051;
+  border-bottom: solid 1px #49aee9;
+  min-width: 250px;
   width: 30%;
   padding-bottom: 4px;
   color: #fff !important;
@@ -110,32 +131,3 @@ button:active {
   outline: none;
 }
 
-.weather__info {
-  width: 60%;
-  font-size: 20px;
-  font-weight: 200;
-  letter-spacing: 2px;
-}
-
-.weather__key {
-  color: #f16051;
-  border-bottom: solid 2px rgba(255,255,255,0.06);
-  padding: 20px 0 20px 0;
-  font-weight: 400;
-}
-
-.weather__key:last-child {
-  border: 0;
-}
-
-.weather__value {
-  color: #fff;
-  font-weight: 200;
-}
-
-.weather__error {
-  color: #fff;
-  font-size: 20px;
-  letter-spacing: 1px;
-  font-weight: 200;
-}
